@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>六月息 JuneXi · 界面架构改版方案 v2（征求意见稿）</title>
+<title>六月息 JuneXi · 界面架构改版方案 v3（征求意见稿）</title>
 <style>
   :root{
     --paper:#f6f2e9; --paper2:#efe9db; --ink:#2b2620; --ink2:#5c554a;
@@ -25,7 +25,6 @@
   .lead{font-size:17px}
   .pain{background:var(--paper2);border:1px solid var(--hairline);border-radius:10px;padding:16px 20px;margin:18px 0}
   .pain li{margin:8px 0 8px 20px}
-  /* 五段工序流程图 */
   .flow{display:flex;gap:0;margin:20px 0 6px;align-items:stretch;flex-wrap:wrap}
   .stage{flex:1;min-width:150px;background:#fffdf7;border:1px solid var(--hairline);border-radius:10px;padding:12px 12px 10px;margin:4px;position:relative}
   .stage .no{font-size:12px;color:var(--cinnabar);font-weight:700;letter-spacing:.2em}
@@ -35,7 +34,12 @@
   .stage .tools b{color:var(--pine);font-weight:400;display:block;font-size:11.5px;letter-spacing:.15em;margin-bottom:3px}
   .stage .out{margin-top:6px;font-size:12.5px;color:var(--azure)}
   .flow-arrow{align-self:center;color:var(--cinnabar);font-size:20px;padding:0 2px}
-  /* 方案卡片 */
+  .loopnote{background:#fffdf7;border:1px solid var(--hairline);border-left:5px solid var(--azure);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .scaffold{background:linear-gradient(135deg,#fdf6ec,#f3ede0);border:1.5px solid #d8a23a;border-radius:12px;padding:16px 20px;margin:16px 0}
+  .scaffold h3{margin-top:0}
+  .scaffold .cols{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px}
+  .scaffold .col{flex:1;min-width:180px;background:#fffdf7;border:1px solid var(--hairline);border-radius:8px;padding:10px 12px;font-size:13.5px}
+  .scaffold .col b{color:var(--cinnabar)}
   .scheme{border:1px solid var(--hairline);border-radius:14px;background:#fffdf7;overflow:hidden;margin:28px 0;box-shadow:0 4px 18px rgba(60,50,30,.08)}
   .scheme-head{padding:18px 22px 12px;border-bottom:1px dashed var(--hairline);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
   .scheme-no{font-size:13px;color:#fff;background:var(--azure);border-radius:4px;padding:2px 10px;letter-spacing:.2em}
@@ -75,12 +79,15 @@
   .mock .pipe{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:10px;color:#9aa0ae;flex-wrap:wrap}
   .mock .pipe .pc{background:#33313b;border-radius:6px;padding:5px 12px;border:1px solid #4a5064}
   .mock .pipe .pa{color:#d8a23a;font-size:15px}
+  .mock .pipe .pa.back{color:#7f96c9}
   .mock .badge{display:inline-block;font-size:10.5px;border-radius:4px;padding:1px 6px;margin-left:6px}
   .mock .badge.todo{background:#4a3a2a;color:#ffd27f}
   .mock .badge.ok{background:#2a4436;color:#8fd8a8}
   .mock .toolline{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
   .mock .toolline span{background:#23262e;border:1px solid #3a3f4d;border-radius:5px;padding:2px 8px;color:#9aa}
   .mock .toolline span.on{border-color:var(--cinnabar);color:#fff;background:#3d2b28}
+  .mock .scaf{display:flex;gap:8px;background:#2b2e37;border:1px solid #d8a23a;border-radius:8px;padding:8px 10px;margin-top:10px;align-items:center;flex-wrap:wrap}
+  .mock .scaf b{color:#ffd27f}
   @media (max-width:640px){ h1{font-size:24px} .wrap{padding:30px 14px 60px} table.cmp{font-size:12.5px} .flow-arrow{display:none} }
 </style>
 </head>
@@ -91,23 +98,23 @@
   <div class="seal">息</div>
   <div>
     <div class="kicker">六月息 JUNEXI · 史学工作台</div>
-    <h1>界面架构改版方案 v2（征求意见稿）</h1>
-    <div class="sub">2026 年 11 月 · 第二版：以历史研究工作流为设计依据 · 出品：数字史学中心 · 蒋韵媛</div>
+    <h1>界面架构改版方案 v3（征求意见稿）</h1>
+    <div class="sub">2026 年 11 月 · 第三版：以历史研究工作流为据，以能力增长为纲 · 出品：数字史学中心 · 蒋韵媛</div>
   </div>
 </header>
 
-<p class="lead">六月息自 2026 年 9 月发布以来已迭代 40 余个版本，功能层面（CBDB 检索、文献图谱、AI 助手、工作流、插件市场、史学工具箱）基本齐备。下一阶段的核心问题不再是"加功能"，而是<strong>界面架构</strong>。v2 方案的设计依据只有一个：<strong>历史研究本身的工作流程</strong>——让软件的结构服从研究的工序，而不是让研究去迁就软件的功能分类。</p>
+<p class="lead">六月息自 2026 年 9 月发布以来已迭代 40 余个版本，功能层面（CBDB 检索、文献图谱、AI 助手、工作流、插件市场、史学工具箱）基本齐备。下一阶段的核心问题不再是"加功能"，而是<strong>界面架构</strong>。v3 方案确立一个定位：<strong>六月息不仅是研究工作台，更是历史能力增长的脚手架</strong>——软件结构服从治史流程，治史过程沉淀为学习者的成长轨迹。</p>
 
 <div class="pain">
   <strong>现状痛点</strong>
   <ul>
     <li>顶部 12 个页签按"<em>功能的类型</em>"排列（资源/工作台/数据库工具），而不是按"<em>研究的工序</em>"——同一条史料的时代考证，要在史学工具、CBDB、地图三个页签间人肉往返；</li>
     <li>各页签互不感知：蒐集到的史料、考证出的批注、对话里挖出的线索，无法进入下一步工序；</li>
-    <li>仪表盘是"展示板"而非"工作台"：看完统计数字，仍要自己想"今天该从哪道工序继续"。</li>
+    <li>用完即走，不留痕：这次查对的年号、纠正过的误读，下次从头再来——工具没有帮人<strong>长本事</strong>。</li>
   </ul>
 </div>
 
-<h2>设计依据 · 历史研究的五道工序</h2>
+<h2>设计依据 · 五道工序 + 两条贯穿机制 + 一层脚手架</h2>
 <p>参照传统史学的治学历程（严耕望先生所谓"竭泽而渔"的搜集、"实事求是"的考证，到"贯通组织"与"属辞比事"的撰述），结合数字人文工具的能力边界，将日常研究划分为五道工序，每道工序对应界面上一个工作面，<strong>工序的产出物自动流向下道工序</strong>：</p>
 
 <div class="flow">
@@ -151,11 +158,26 @@
     <div class="out">产出：文稿（带规范脚注）</div>
   </div>
 </div>
-<p style="color:var(--ink2);font-size:13.5px">现在散置在各处的功能——年号速查、避讳工具、职官库、历史地图、CBDB——正是"考证"这道工序的工具箱；它们今天是一个独立页签，今后长在工序里。</p>
 
-<h2>方向一 · 工序式 <small>导航即工序，产出即流转</small></h2>
+<div class="loopnote">
+  <strong>但治史不是单行道——两条贯穿机制：</strong><br>
+  <strong>① 回环复读</strong>：史料要反复读、隔时校准（版本异文、语境变迁、新见材料都可能推翻旧解）。任何卡片在任何时候可 <strong>↩ 返检</strong>，从属文回到蒐史只需一步；<br>
+  <strong>② 读写并进</strong>：写作与蒐读考证同步发生——读到好材料随手记成想法段落，写作中冒出疑点立刻回查，<strong>不是"做完前四步才写"</strong>。
+</div>
+
+<div class="scaffold">
+  <h3>再往下一层 · 脚手架：让人长本事，不只出活儿</h3>
+  <p style="font-size:14px">工作台用完即走，脚手架要留下成长。每次研究自动沉淀三样东西：</p>
+  <div class="cols">
+    <div class="col"><b>📈 能力轨迹</b><br>读过多少史料、校过多少条考证、成过几篇文——量与质的时间线，看得见自己的进益。</div>
+    <div class="col"><b>📕 校准档案</b><br>AI 与师友的每次纠正自动归档为"个人错题本"：误读的字、搞混的官名、张冠李戴的人——复读提醒专治旧错。</div>
+    <div class="col"><b>🧠 知识资产</b><br>知识库随研究自生长，主题贯通（人/地/事/制），读新材料时自动关联旧积累——越用越厚。</div>
+  </div>
+</div>
+
+<h2>方向一 · 工序式 <small>导航即工序 · 产出即流转 · 全程即积累</small></h2>
 <div class="scheme">
-  <div class="scheme-head"><span class="scheme-no">主方案</span><span class="scheme-name">工序式架构</span><span class="scheme-tagline">顶部导航 = 五道工序；卡片沿工序自动流转</span></div>
+  <div class="scheme-head"><span class="scheme-no">主方案</span><span class="scheme-name">工序式架构 + 脚手架底座</span><span class="scheme-tagline">顶部导航 = 五道工序；卡片沿工序流转；底座沉淀成长</span></div>
   <div class="scheme-body">
     <div class="mock">
       <div class="bar"><span class="lg">🐱 六月息</span>
@@ -167,30 +189,34 @@
           <div style="color:#9aa">流入本工序 · 来自「蒐史」</div>
           <div class="mini" style="margin-top:8px">📇 《宋史·职官志》"三司条例司"条<span class="badge todo">待考证</span></div>
           <div class="mini" style="margin-top:6px">📇 王安石墓志录文（周必大撰）<span class="badge todo">待考证</span></div>
-          <div class="mini" style="margin-top:6px;color:#7a8090">📇 《续资治通鉴长编》卷二三一<span class="badge ok">已落实</span></div>
+          <div class="mini" style="margin-top:6px;color:#7a8090">📇 《续资治通鉴长编》卷二三一<span class="badge ok">已落实 · 复读2次</span></div>
         </div>
         <div class="panel" style="flex:1.4">
           <div style="color:#9aa">考证工作台 · 工具随卡片内容唤起</div>
           <div class="toolline" style="margin-top:8px"><span class="on">年号换算</span><span>职官沿革</span><span>地名沿革</span><span>避讳校验</span><span>CBDB 对号</span></div>
           <div class="mini">「治平四年二月，拜参知政事」<br>→ 治平四年 = <b style="color:#ffd27f">1067 年</b> ✓ 与《长编》卷二三一相合<br>→ 参知政事：宋中书门下副相，CBDB 对号 <b style="color:#ffd27f">王安石 c_personid=1762</b> ✓</div>
-          <div style="margin-top:8px"><span class="btn red">✓ 完成考证 → 送往综核</span> <span class="btn ghost">标记矛盾</span></div>
+          <div style="margin-top:8px"><span class="btn red">✓ 完成考证 → 送往综核</span> <span class="btn ghost">↩ 返检旧解</span> <span class="btn ghost">记一段想法</span></div>
         </div>
         <div class="panel" style="flex:.9">
           <div style="color:#9aa">本工序产出</div>
           <div class="mini" style="margin-top:8px">📑 批注卡 · 三落实<br>人：王安石(1762) / 时：1067 / 事：除参知政事</div>
-          <div style="margin-top:8px;color:#8a90a0">下一工序「综核」将以它为节点入图</div>
+          <div style="margin-top:8px;color:#8a90a0">「记一段想法」随手进属文草稿，疑点就地↩回蒐史</div>
         </div>
       </div>
-      <div class="pipe"><span class="pc">📇 史料卡</span><span class="pa">→</span><span class="pc">📑 考证批注</span><span class="pa">→</span><span class="pc">🧵 论据链</span><span class="pa">→</span><span class="pc">✍️ 段落与脚注</span></div>
-      <div class="cap">同一条史料，从蒐集到成文，每一步都留在工序里</div>
+      <div class="pipe">
+        <span class="pc">📇 史料卡</span><span class="pa">→</span><span class="pc">📑 考证批注</span><span class="pa">→</span><span class="pc">🧵 论据链</span><span class="pa">→</span><span class="pc">✍️ 段落与脚注</span>
+        <span class="pa back">↩ 返检回环 · 读写并进</span>
+      </div>
+      <div class="scaf">🪜 <b>脚手架</b>&nbsp; 本月复读 12 条史料 · 校准档案 +3（误读"制置"为"置制"已归档，复读提醒 7 天后） · 知识库 66 条 · 已贯通 9 主题 · 能力轨迹 ↗</div>
+      <div class="cap">同一条史料：进来被蒐集，途中被考证，出去成文字——全程都在长见识</div>
     </div>
     <ol class="mech">
       <li><strong>导航即工序</strong>：五道工序取代 12 个功能页签；每道工序的工作面内置该工序的全部工具（考证面 = 年号/职官/地名/避讳/CBDB 一体），不再跨页签人肉往返；</li>
-      <li><strong>产出即流转</strong>：史料卡 → 考证批注 → 论据链 → 段落脚注，卡片自动沿工序传递，研究流顶栏全程可见可取——"我是怎么查到这里的"天然可回放；</li>
-      <li><strong>可退可进</strong>：实际研究常来回翻检（属文时发现疑点回到考证）——工序间双向流转，任何卡片带完整来路。</li>
+      <li><strong>产出即流转</strong>：史料卡 → 考证批注 → 论据链 → 段落脚注，卡片自动沿工序传递；任意时刻可 <strong>↩ 返检</strong>、可"记一段想法"直通属文——回环复读与读写并进是默认行为，不是特殊操作；</li>
+      <li><strong>全程即积累（脚手架）</strong>：每次纠正进校准档案、每条材料进知识资产、每道工序留轨迹——工具在用你研究的过程，教你做研究。</li>
     </ol>
-    <div class="meta"><span>改动量 <b>中高</b>（导航重构 + 卡片流转层，约三周）</span><span>与现有功能 <b>全兼容</b>（工具搬位置，能力不丢失）</span><span>教学价值 <b>高</b>（把"治史程序"本身做成了界面，可课堂演示）</span></div>
-    <div class="reco">推荐作为主线：它把"界面架构"问题还原为"研究工序"问题——软件结构 = 治史流程，这对数字史学中心的教学定位也最合身。</div>
+    <div class="meta"><span>改动量 <b>中高</b>（导航重构 + 卡片流转层 + 沉淀层，约三至四周）</span><span>与现有功能 <b>全兼容</b>（工具搬位置，能力不丢失）</span><span>教学价值 <b>高</b>：把"治史程序 + 能力养成"做成了界面</span></div>
+    <div class="reco">推荐作为主线：软件结构 = 治史流程，软件副作用 = 学习者的能力增长——这与数字史学中心"教学生做研究"的定位完全重合。</div>
   </div>
 </div>
 
@@ -207,7 +233,7 @@
 <div class="scheme">
   <div class="scheme-head"><span class="scheme-no">选项</span><span class="scheme-name">同桌形态</span><span class="scheme-tagline">AI 常驻右侧，与你同看当前工序的页面</span></div>
   <div class="scheme-body">
-    <p>同样叠加在工序式之上：任何工序的工作面右侧可展开"同桌栏"，AI 共享当前上下文（你在考哪张卡片、在读哪段史料），就地吩咐"把这段存批注""此人上地图"。与 dsh 架构最顺承，建议作为<strong>考证与属文两道工序的内建增强</strong>先行落地。</p>
+    <p>同样叠加在工序式之上：任何工序的工作面右侧可展开"同桌栏"，AI 共享当前上下文（你在考哪张卡片、在读哪段史料），就地吩咐"把这段存批注""此人上地图"。与 dsh 架构最顺承，建议作为<strong>考证与属文两道工序的内建增强</strong>先行落地。AI 的纠正天然流入脚手架的校准档案。</p>
     <div class="meta"><span>改动量 <b>中</b>（分屏栏 + 上下文同步，约两周，可先行）</span><span>与 dsh <b>同构</b>（八批移植已铺路）</span></div>
   </div>
 </div>
@@ -215,10 +241,11 @@
 <h2>方案对比</h2>
 <table class="cmp">
   <tr><th></th><th>方向一 · 工序式（主）</th><th>方向二 · 书房</th><th>方向三 · 同桌</th></tr>
-  <tr><td><strong>设计依据</strong></td><td>历史研究的五道工序</td><td>空间隐喻（皮肤）</td><td>AI 协作习惯（增强）</td></tr>
-  <tr><td><strong>回答的痛点</strong></td><td>功能分类 ≠ 研究流程；页签互不感知</td><td>页签太杂、首页无归属感</td><td>AI 与干活分离</td></tr>
-  <tr><td><strong>改动量</strong></td><td>中高（≈3 周）</td><td>中（≈2 周，可后做）</td><td>中（≈2 周，可先行）</td></tr>
-  <tr><td><strong>对教学的价值</strong></td><td><b>高</b>：把治史程序做成可演示的界面</td><td>高：文化气质，适合展示</td><td>高：AI 协作示范</td></tr>
+  <tr><td><strong>设计依据</strong></td><td>历史研究流程 + 能力养成</td><td>空间隐喻（皮肤）</td><td>AI 协作习惯（增强）</td></tr>
+  <tr><td><strong>回答的痛点</strong></td><td>功能分类 ≠ 研究流程；页签互不感知；用完不留痕</td><td>页签太杂、首页无归属感</td><td>AI 与干活分离</td></tr>
+  <tr><td><strong>改动量</strong></td><td>中高（≈3-4 周）</td><td>中（≈2 周，可后做）</td><td>中（≈2 周，可先行）</td></tr>
+  <tr><td><strong>能力增长</strong></td><td><b>内置</b>：轨迹 · 校准档案 · 知识资产</td><td>—</td><td>纠正自动入档案</td></tr>
+  <tr><td><strong>对教学的价值</strong></td><td><b>高</b>：治史程序 + 脚手架双示范</td><td>高：文化气质展示</td><td>高：AI 协作示范</td></tr>
   <tr><td><strong>主要风险</strong></td><td>工序划分若不合研究习惯则事倍功半（需评审把关）</td><td>信息密度上限低</td><td>AI 质量决定体验下限</td></tr>
   <tr><td><strong>组合关系</strong></td><td colspan="3">工序式为骨架；书房可作门面叠加；同桌可作考证/属文的内建增强先行落地——三者不互斥</td></tr>
 </table>
@@ -226,15 +253,15 @@
 <div class="ask">
   <strong>恳请评审指点（三问）</strong>
   <ul>
-    <li><strong>工序之问</strong>：五道划分（立题 · 蒐史 · 考证 · 综核 · 属文）是否符合实际治史习惯？有无漏环或并环？</li>
-    <li><strong>方向之问</strong>：工序式作为骨架是否成立？书房、同桌两个形态选项，哪个更值得叠加、什么次序？</li>
+    <li><strong>工序之问</strong>：五道划分（立题 · 蒐史 · 考证 · 综核 · 属文）是否符合实际治史习惯？回环复读与读写并进两条机制，学界习惯的表述方式是什么？</li>
+    <li><strong>定位之问</strong>："工作台 + 能力脚手架"的双重定位是否成立？校准档案、能力轨迹的设计，从教学经验看有没有更值得做的形态？</li>
     <li><strong>经费之问</strong>：若中心经费二期聚焦其一，建议如何排序投入？</li>
   </ul>
 </div>
 
 <footer>
   <span>六月息 · "去以六月息者也" · 数字史学中心出品</span>
-  <span>本页为公开征求意见稿 v2 · 2026-11-15</span>
+  <span>本页为公开征求意见稿 v3 · 2026-11-15</span>
 </footer>
 
 </div>
