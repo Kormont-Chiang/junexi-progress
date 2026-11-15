@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>六月息 JuneXi · 界面架构改版方案（征求意见稿）</title>
+<style>
+  :root{
+    --paper:#f6f2e9; --paper2:#efe9db; --ink:#2b2620; --ink2:#5c554a;
+    --cinnabar:#a63a2a; --pine:#4a7a5c; --azure:#3d5a99;
+    --hairline:#d8d0bd;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Noto Serif SC","Source Han Serif SC","SimSun",serif;line-height:1.75;font-size:16px}
+  .wrap{max-width:880px;margin:0 auto;padding:48px 22px 80px}
+  .seal{width:64px;height:64px;background:var(--cinnabar);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.2);transform:rotate(-2deg)}
+  header.top{display:flex;gap:20px;align-items:center;border-bottom:3px double var(--hairline);padding-bottom:26px;margin-bottom:30px}
+  .kicker{letter-spacing:.35em;color:var(--cinnabar);font-size:13px;font-weight:700}
+  h1{font-size:30px;line-height:1.4;margin:6px 0 4px}
+  .sub{color:var(--ink2);font-size:14px}
+  h2{font-size:22px;margin:44px 0 6px;padding-left:14px;border-left:5px solid var(--cinnabar)}
+  h2 small{color:var(--ink2);font-size:13px;font-weight:400;margin-left:10px;letter-spacing:.1em}
+  h3{font-size:18px;margin:26px 0 8px;color:var(--cinnabar)}
+  p{margin:10px 0}
+  .lead{font-size:17px}
+  .pain{background:var(--paper2);border:1px solid var(--hairline);border-radius:10px;padding:16px 20px;margin:18px 0}
+  .pain li{margin:8px 0 8px 20px}
+  .scheme{border:1px solid var(--hairline);border-radius:14px;background:#fffdf7;overflow:hidden;margin:28px 0;box-shadow:0 4px 18px rgba(60,50,30,.08)}
+  .scheme-head{padding:18px 22px 12px;border-bottom:1px dashed var(--hairline);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .scheme-no{font-size:13px;color:#fff;background:var(--azure);border-radius:4px;padding:2px 10px;letter-spacing:.2em}
+  .scheme-name{font-size:21px;font-weight:700}
+  .scheme-tagline{color:var(--ink2);font-size:14px}
+  .scheme-body{padding:16px 22px 20px}
+  .mech{counter-reset:m;margin:14px 0}
+  .mech li{list-style:none;margin:10px 0 10px 4px;padding-left:34px;position:relative}
+  .mech li::before{counter-increment:m;content:counter(m);position:absolute;left:0;top:2px;width:22px;height:22px;border-radius:50%;background:var(--pine);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:13.5px}
+  .meta span{background:var(--paper2);border-radius:6px;padding:3px 12px}
+  .meta b{color:var(--cinnabar)}
+  .reco{background:#fdf6ec;border:1.5px solid #d8a23a;border-radius:10px;padding:10px 16px;margin-top:14px;font-size:14.5px}
+  table.cmp{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;background:#fffdf7}
+  table.cmp th,table.cmp td{border:1px solid var(--hairline);padding:9px 10px;text-align:left;vertical-align:top}
+  table.cmp th{background:var(--paper2)}
+  .ask{background:var(--paper2);border-radius:12px;padding:18px 22px;margin:26px 0}
+  .ask li{margin:8px 0 8px 20px}
+  footer{margin-top:56px;padding-top:18px;border-top:3px double var(--hairline);color:var(--ink2);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  /* ── mockup 通用 ── */
+  .mock{background:#23262e;border-radius:10px;padding:14px;margin:16px 0 8px;color:#cfd4e0;font-family:"Microsoft YaHei",sans-serif;font-size:12px;box-shadow:inset 0 0 0 1px #343842}
+  .mock .bar{display:flex;align-items:center;gap:8px;background:#2b2e37;border-radius:8px;padding:7px 10px;margin-bottom:10px;flex-wrap:wrap}
+  .mock .bar .lg{color:#7f96c9;font-weight:700}
+  .mock .tab{padding:3px 9px;border-radius:6px;color:#9aa0ae;white-space:nowrap}
+  .mock .tab.on{background:#3d5a99;color:#fff}
+  .mock .tray{display:flex;gap:6px;align-items:center;background:#33313b;border:1px dashed #d8a23a;border-radius:8px;padding:6px 10px;margin-bottom:10px}
+  .mock .chip{background:#3a3f4d;border:1px solid #4a5064;border-radius:14px;padding:3px 10px;color:#e8ddc0;white-space:nowrap}
+  .mock .chip b{color:#ffd27f;font-weight:400;margin-left:6px;cursor:pointer}
+  .mock .panel{background:#2b2e37;border:1px solid #3a3f4d;border-radius:8px;padding:10px 12px}
+  .mock .row{display:flex;gap:10px}
+  .mock .row > *{flex:1;min-width:0}
+  .mock .mini{background:#23262e;border:1px solid #3a3f4d;border-radius:6px;padding:8px 10px;color:#aab}
+  .mock .btn{background:#3d5a99;color:#fff;border-radius:6px;padding:4px 10px;display:inline-block}
+  .mock .btn.ghost{background:#2b2e37;border:1px solid #4a5064;color:#cfd4e0}
+  .mock .desk{position:relative;height:300px;border-radius:8px;background:#2e2a24;overflow:hidden}
+  .mock .deskobj{position:absolute;border-radius:8px;padding:8px 10px}
+  .mock .cap{color:#8a90a0;font-size:11px;text-align:center;margin-top:6px}
+  .mock .split{display:flex;gap:10px}
+  .mock .split .lft{flex:1.6}
+  .mock .split .rgt{flex:1;border-left:1px solid #3a3f4d;padding-left:10px}
+  .mock .bub{background:#31364a;border-radius:10px 10px 10px 2px;padding:7px 10px;margin:6px 0;color:#dfe4f2}
+  .mock .bub.ai{background:#2b2e37;border:1px solid #3a3f4d;border-radius:10px 10px 2px 10px;color:#b9c0d4}
+  @media (max-width:640px){ h1{font-size:24px} .wrap{padding:30px 14px 60px} table.cmp{font-size:12.5px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="seal">息</div>
+  <div>
+    <div class="kicker">六月息 JUNEXI · 史学工作台</div>
+    <h1>界面架构改版方案（征求意见稿）</h1>
+    <div class="sub">2026 年 11 月 · 出品：数字史学中心 · 蒋韵媛 · 供评审参考</div>
+  </div>
+</header>
+
+<p class="lead">六月息自 2026 年 9 月发布以来已迭代 40 余个版本，功能层面（CBDB 检索、文献图谱、AI 助手、工作流、插件市场）基本齐备。下一阶段的核心问题不再是"加功能"，而是<strong>界面架构</strong>：如何让一个功能完备的系统，有一条把日常研究串起来的线。本文给出三个候选方向，恳请评审指教。</p>
+
+<div class="pain">
+  <strong>现状痛点</strong>
+  <ul>
+    <li>顶部 12 个页签按"<em>功能的类型</em>"排列（资源/工作台/数据库工具），而不是按"<em>用户的动作</em>"——查一个人要横跨 CBDB、地图、史学工具三个页签，全靠人肉记忆串线；</li>
+    <li>仪表盘是"展示板"而非"工作台"：看完统计数字，仍要自己想"今天该干嘛"；</li>
+    <li>各页签互不感知：读文献时查到的名字、AI 对话里挖出的线索，无法带到下一个页签继续用。</li>
+  </ul>
+</div>
+
+<h2>方向一 · 研究流 <small>一条可见的线</small></h2>
+<div class="scheme">
+  <div class="scheme-head"><span class="scheme-no">方向 一</span><span class="scheme-name">研究流</span><span class="scheme-tagline">查到的每个人、每个地名、每本文献，自动汇成一条工作流</span></div>
+  <div class="scheme-body">
+    <div class="mock">
+      <div class="bar"><span class="lg">🐱 六月息</span><span class="tab on">🔍 查</span><span class="tab">📚 读</span><span class="tab">✍️ 写</span><span class="tab">🤖 AI</span></div>
+      <div class="tray">🧺 研究流 <span class="chip">🏛 王安石 <b>×</b></span><span class="chip">🗺 临川 <b>×</b></span><span class="chip">📜 熙宁 <b>×</b></span><span class="chip">📄 《年谱三种》 <b>×</b></span><span style="color:#8a90a0">→ 任何页签可引用</span></div>
+      <div class="row">
+        <div class="panel" style="flex:1.5">
+          <div style="color:#9aa">CBDB · 王安石（1021–1086）· 抚州临川</div>
+          <div style="margin-top:8px;color:#cfd4e0">亲属五服 <b style="color:#ffd27f">761 人</b> · 官职履历 21 任 · 社会关系 43 条</div>
+          <div style="margin-top:10px"><span class="btn">＋ 加入研究流</span> <span class="btn ghost">🗺 上地图</span> <span class="btn ghost">发给 AI 分析</span></div>
+        </div>
+        <div class="panel">
+          <div style="color:#9aa">✍️ 写作页 · 论文《北魏郊庙下大夫》</div>
+          <div class="mini" style="margin-top:8px">……王安石改革职官体系时<span style="background:#3a3f4d;border-radius:4px;padding:1px 6px;color:#e8ddc0">引用:研究流·王安石</span>保留了唐末以来的使职差遣传统……</div>
+        </div>
+      </div>
+      <div class="cap">所有页签共享同一条"研究流"——线在这里</div>
+    </div>
+    <ol class="mech">
+      <li><strong>全局研究上下文条</strong>：顶栏常驻。任何页签里查到的对象（人/地/年号/文献/笔记），一键"加入研究流"；</li>
+      <li><strong>跨页签引用</strong>：写作时插入流中对象、AI 对话自动携带流上下文、地图批量标注流中地名；</li>
+      <li><strong>流即足迹</strong>：研究流自动存档可回放，等于一份"我是怎么查到这里的"过程记录——对数字人文教学（展示检索路径）尤其有价值。</li>
+    </ol>
+    <div class="meta"><span>改动量 <b>中</b>（顶栏组件 + 跨页签事件总线，约两周）</span><span>演示性 <b>强</b></span><span>差异化 <b>独有</b>（Zotero/dsh/WorkBuddy 均无此设计）</span></div>
+    <div class="reco">推荐作为主线：它直接回答"没有一条线"的痛点，且与现有功能全部兼容、可渐进落地。</div>
+  </div>
+</div>
+
+<h2>方向二 · 书房 <small>一案头即首页</small></h2>
+<div class="scheme">
+  <div class="scheme-head"><span class="scheme-no">方向 二</span><span class="scheme-name">书房</span><span class="scheme-tagline">整个应用是一张书房平面图，不是一排页签</span></div>
+  <div class="scheme-body">
+    <div class="mock">
+      <div class="bar"><span class="lg">🐱 六月息</span><span class="tab on">🏠 书房</span><span class="tab">资料库</span><span class="tab">AI</span><span class="tab">档案墙</span></div>
+      <div class="desk">
+        <div class="deskobj panel" style="left:24%;top:30%;width:52%;height:46%;border-color:#d8a23a">案头 · 当前研究<div style="color:#9aa;margin-top:6px">《北魏郊庙下大夫》修订稿<br>今日：写完第二节 · 已写 1,240 字</div><div style="margin-top:8px"><span class="btn">▶ 继续写作</span> <span class="btn ghost">🕐 今日日程</span></div></div>
+        <div class="deskobj mini" style="left:2%;top:8%;width:19%;height:80%">左抽屉<br><br>Zotero 文献<br>Obsidian 笔记<br>史料库<br><span style="color:#7f96c9">随取随放</span></div>
+        <div class="deskobj mini" style="right:2%;top:8%;width:19%;height:80%">右架<br><br>CBDB<br>历史地图<br>史学工具<br>AI 助手<br><span style="color:#7f96c9">拖上案头即用</span></div>
+        <div class="deskobj mini" style="left:24%;top:6%;width:52%;height:16%">卷轴 · 继续上次<br><span style="color:#9aa">💬 会话"王安石五服" · 📄 王安石族谱.pdf 第34页 · 🧩 工作流"查人→上地图"</span></div>
+      </div>
+      <div class="cap">空间隐喻：案头=当下，抽屉=资料，架=工具——核心闭环零页签切换</div>
+    </div>
+    <ol class="mech">
+      <li><strong>一案头</strong>：首页即书房，案头放"当前研究"（当前论文/当前项目），打开应用即回到工作状态；</li>
+      <li><strong>四周即导航</strong>：左抽屉（资料）、右架（工具）拖上案头即用，不用记页签名；</li>
+      <li><strong>档案墙</strong>：过往项目整卷归档上墙，点取即展开——研究的"来路"一目了然。</li>
+    </ol>
+    <div class="meta"><span>改动量 <b>中高</b>（全新首页 + 动效，约三周）</span><span>演示性 <b>很强</b>（文化气质独树一帜）</span><span>学习成本 <b>低</b>（符合直觉）</span></div>
+  </div>
+</div>
+
+<h2>方向三 · 同桌 <small>AI 与你同看一页</small></h2>
+<div class="scheme">
+  <div class="scheme-head"><span class="scheme-no">方向 三</span><span class="scheme-name">同桌</span><span class="scheme-tagline">AI 不是目的地，是坐在旁边的研究同伴</span></div>
+  <div class="scheme-body">
+    <div class="mock">
+      <div class="bar"><span class="lg">🐱 六月息</span><span class="tab on">📚 读文献</span><span class="tab">🏛 CBDB</span><span class="tab">🗺 地图</span><span style="margin-left:auto;color:#8a90a0">🤖 同桌常驻 →</span></div>
+      <div class="split">
+        <div class="lft panel">
+          <div style="color:#9aa">王安石《上仁宗皇帝言事书》· Zotero 联动阅读</div>
+          <div class="mini" style="margin-top:8px;line-height:1.9">……臣窃观陛下有恭俭之德，有聪明睿智之才……<span style="background:#3a3f4d;border-radius:4px;padding:1px 5px;color:#e8ddc0">熙宁</span>二年二月，拜参知政事……</div>
+        </div>
+        <div class="rgt panel">
+          <div style="color:#9aa">🤖 同桌 · 已同步你所看</div>
+          <div class="bub">这段"设制置三司条例司"是什么来头？</div>
+          <div class="bub ai">熙宁变法的首个总枢机构，掌"经画邦计"……<span style="color:#7f96c9">→ 已定位原文 ③</span></div>
+          <div style="margin-top:6px"><span class="btn">把这段存入笔记</span> <span class="btn ghost">展开五服</span></div>
+        </div>
+      </div>
+      <div class="cap">AI 始终看得见你正在看的页面——不是"去 AI 页提问"，是"就地吩咐"</div>
+    </div>
+    <ol class="mech">
+      <li><strong>分屏常驻</strong>：任意页签右侧展开同桌栏（可收起），AI 与你共享当前页面上下文（选中文字/当前人物/在读文献）；</li>
+      <li><strong>就地操作</strong>："把这段存笔记""这个人上地图"——AI 直接操作你面前的页面，无需跳转；</li>
+      <li><strong>模型随切</strong>：对话级切换 DeepSeek/Kimi/Qwen 等，每次回复标注所用模型（已实现）。</li>
+    </ol>
+    <div class="meta"><span>改动量 <b>高</b>（全端上下文同步，约四周）</span><span>与 dsh 架构 <b>最顺承</b>（八批移植已铺路）</span><span>日常习惯 <b>同构</b>（与 WorkBuddy/dsh 一致）</span></div>
+    <div class="reco">若经费二期以"AI 研究伙伴"为定位，此方向与中心目标最契合，可与方向一组合（研究流 + 同桌）。</div>
+  </div>
+</div>
+
+<h2>三方向对比</h2>
+<table class="cmp">
+  <tr><th></th><th>方向一 · 研究流</th><th>方向二 · 书房</th><th>方向三 · 同桌</th></tr>
+  <tr><td><strong>线的逻辑</strong></td><td>研究对象在页签间流动</td><td>空间隐喻收拢全部入口</td><td>AI 共享你的上下文</td></tr>
+  <tr><td><strong>回答的痛点</strong></td><td>"没有一条线"</td><td>"页签太杂"</td><td>"AI 与干活分离"</td></tr>
+  <tr><td><strong>改动量</strong></td><td>中（≈2 周）</td><td>中高（≈3 周）</td><td>高（≈4 周）</td></tr>
+  <tr><td><strong>教学演示价值</strong></td><td>高（检索路径可回放）</td><td>很高（文化气质）</td><td>高（AI 协作示范）</td></tr>
+  <tr><td><strong>主要风险</strong></td><td>顶栏可能拥挤（需克制的交互设计）</td><td>信息密度上限低</td><td>AI 质量决定体验下限</td></tr>
+  <tr><td><strong>组合性</strong></td><td colspan="3">方向一可为骨架，方向三作为"写/读"场景的常驻增强；方向二适合作为演示门面或二期项目</td></tr>
+</table>
+
+<div class="ask">
+  <strong>恳请评审指点（三问）</strong>
+  <ul>
+    <li>从<strong>日常使用</strong>看，哪个方向最值得优先做？</li>
+    <li>从<strong>数字史学中心的教学/演示</strong>角度，哪个方向更有展示价值？</li>
+    <li>若经费二期（中心支持）聚焦其一，建议如何排序？</li>
+  </ul>
+</div>
+
+<footer>
+  <span>六月息 · "去以六月息者也" · 数字史学中心出品</span>
+  <span>本页为公开征求意见稿 · 2026-11-15</span>
+</footer>
+
+</div>
+</body>
+</html>
