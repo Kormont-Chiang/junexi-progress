@@ -45,7 +45,7 @@ a { color:var(--green); }
 <div class="sub">历史学专业学术工作台 · 数字人文 × 中国古代史 —— 开发进度实时看板（推送即更新）</div>
 
 <div class="hero">
-  <div><div class="ver">v1.5.4</div>
+  <div><div class="ver">v?</div>
     <div class="meta">CHANGELOG 最近发版 1.5.3（2026-11-15）</div>
     <span class="tag">当前版本</span></div>
   <div style="flex:1;min-width:220px;color:var(--dim);font-size:13.5px"></div>
@@ -60,6 +60,9 @@ a { color:var(--green); }
   <div class="it"><div class="d">2026-10-26</div><div class="t">协议清单 19/19 全闭环</div><div class="dsc">v1.1.2 验收自查完成，全量回归通过</div></div>
   <div class="it"><div class="d">2026-11-09</div><div class="t">v1.5.0 显示架构重构</div><div class="dsc">样式表 3891 条逐字重复清零，1924 项真机渲染比对全等</div></div>
   <div class="it key"><div class="d">2026-11-12</div><div class="t">v1.5.1 Session 事件日志</div><div class="dsc">AI 对话统一出口记账 / 会话可回放 / 日历 AI 足迹——「Model-visible means logged」</div></div>
+  <div class="it key"><div class="d">2026-11-17</div><div class="t">v1.6.0 五工序架构重塑版发布</div><div class="dsc">卡片总线/AI 同桌/调度层三模式落地，Release 双资产</div></div>
+  <div class="it key"><div class="d">2026-11-19</div><div class="t">v1.7.0 写作流数据流大更新发布</div><div class="dsc">写作七堵数据流五堵全疏通+SNA 三件套+导航分层</div></div>
+  <div class="it"><div class="d">2026-11-21</div><div class="t">v1.8.4 体验修复六连</div><div class="dsc">Zotero 自愈/本地文件读写/OCR 对照/PaddleOCR 高精引擎/卡片同屏，装机版全量回归通过</div></div>
 </div>
 
 <h2>功能全景</h2>
@@ -68,7 +71,8 @@ a { color:var(--green); }
   <div class="mod"><span class="dot ok"></span><span class="n">亲属与社会关系</span><div class="s">已完成 · 五服直查/递归检索/两人路径 BFS/力导向关系图</div></div>
   <div class="mod"><span class="dot ok"></span><span class="n">历史地图</span><div class="s">已完成 · CHGIS 朝代飞览/中文标注/群体人物上地图</div></div>
   <div class="mod"><span class="dot ok"></span><span class="n">AI 助手</span><div class="s">已完成 · 多模型(DeepSeek/Kimi 等)/工具调用/会话日志 v1.5.1</div></div>
-  <div class="mod"><span class="dot ok"></span><span class="n">文献工作流</span><div class="s">已完成 · Zotero 集成/Obsidian 互通/文献图谱级联扩展</div></div>
+  <div class="mod"><span class="dot ok"></span><span class="n">文献工作流</span><div class="s">已完成 · Zotero 集成（断连自愈一键拉起）/Obsidian 互通/文献图谱级联扩展/本地文件夹直读直写</div></div>
+  <div class="mod"><span class="dot ok"></span><span class="n">高精 OCR 引擎</span><div class="s">已完成 · RapidOCR 内置零配置 + PaddleOCR 高精度一键装（隔离环境，中文识别置信 0.99）</div></div>
   <div class="mod"><span class="dot ok"></span><span class="n">工作流画布</span><div class="s">已完成 · N8N 式节点编排,文献→人名→地图演示链 41 秒零干预</div></div>
   <div class="mod"><span class="dot ok"></span><span class="n">阅读地图</span><div class="s">已完成 · 看板/学习计划/黄历宜忌/日历 AI 足迹</div></div>
   <div class="mod"><span class="dot wip"></span><span class="n">本地大模型</span><div class="s">进行中 · Ollama 集成与模型瘦身(学术小模型路线)</div></div>
@@ -77,11 +81,18 @@ a { color:var(--green); }
 
 <h2>最近更新</h2>
 <div class="feed">
-
+  <div class="r"><span class="dt">11-21</span><span>feat(v1.8.4): paddle 独立环境子进程方案(Korm#5)——主venv numpy2/paddle2.6需numpy1冲突不可解,改隔离venv(%LOCALA</span></div>
+  <div class="r"><span class="dt">11-21</span><span>feat(v1.8.4): 本地文件夹读写全家桶(Korm#3)——/api/fs/save(.bak备份原子替换)/docx-read/docx-save(时间戳备份,格式风险声</span></div>
+  <div class="r"><span class="dt">11-21</span><span>feat(v1.8.4): 属文卡片同屏——_workspace左栏知识卡片rail(筛选/刷新/点击插入光标处,目标wrEditor或paperBodyInput,无编辑器则复制</span></div>
+  <div class="r"><span class="dt">11-21</span><span>feat(v1.8.4): OCR左右对照布局——选图即显双栏(左图右文,可换位/各自收缩持久化/图缩放20-400%)+图片不再消失+存文献库双路径(save-library→D</span></div>
+  <div class="r"><span class="dt">11-21</span><span>feat(v1.8.4): Zotero 10061根治——status增强(可执行hint+exe探测)+/api/zotero/ensure自动拉起(并发锁+35s轮询)+前端</span></div>
+  <div class="r"><span class="dt">11-21</span><span>fix(v1.8.3b): 看门狗ServerXMLHTTP.6.0+setProxy直连——XMLHTTP走系统代理(clash)拦截localhost, 健康检查永远失败→60</span></div>
+  <div class="r"><span class="dt">11-21</span><span>fix(v1.8.3): UI审计四连修——书房三栏溢出/看门狗杀进程/ping端点/知识库卡加载</span></div>
+  <div class="r"><span class="dt">11-21</span><span>fix(v1.8.3): /api/ping健康检查端点(豁免鉴权)——看门狗/api/env被新token门禁401→60s杀进程死循环, 快捷方式永远开不住</span></div>
 </div>
 
 <div class="foot">
-本页由 <span class="updated">2026-11-16 10:41</span> 自动生成并推送——主仓库每次提交发版后一分钟内刷新。<br>
+本页由 <span class="updated">2026-11-21 23:33</span> 自动生成并推送——主仓库每次提交发版后一分钟内刷新。<br>
 🖥️ <b>在线演示预览</b>（常开，可直接上手试）：<a href="https://junexi.cpolar.cn/?jx_token=jx-laoshi-2026">https://junexi.cpolar.cn/?jx_token=jx-laoshi-2026</a><br>
 六月息源码仓库为私有（与数字史学中心协议约定），本页与预览端为对外公开的进度窗口。<br>
 项目：中国社会科学院大学 · 数字史学中心资助项目　|　协议：MIT（著作权双方共有）
