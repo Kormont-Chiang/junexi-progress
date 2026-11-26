@@ -45,10 +45,10 @@ a { color:var(--green); }
 <div class="sub">历史学专业学术工作台 · 数字人文 × 中国古代史 —— 开发进度实时看板（推送即更新）</div>
 
 <div class="hero">
-  <div><div class="ver">v1.9.1</div>
+  <div><div class="ver">v1.9.2</div>
     <div class="meta">CHANGELOG 最近发版 1.5.3（2026-11-15）</div>
-    <span class="tag">UI 大改进八项（书房课题化/命令面板等）</span></div>
-  <div style="flex:1;min-width:220px;color:var(--dim);font-size:13.5px">dsh 修复 10 个缺陷（升级清库/路由404/CBDB 403/出处内联表单等）+ UI 八项改进：书房课题化（案头条+建议动作）、导航去重（课题进度带单位）、属文页改造（大纲竖向树+标题分隔）、阅读体验（字体/字号选择）、Ctrl+K 命令面板、出处记忆。</div>
+    <span class="tag">CBDB SQLite 提速175倍 + UI 11项全落地 + qa_ui 自动化验收</span></div>
+  <div style="flex:1;min-width:220px;color:var(--dim);font-size:13.5px">CBDB .mdb→.sqlite 迁移（294MB，17 索引，搜索提速 175 倍：5400ms→31ms）+ dsh 任务书 UI 11 项全部落地 + 工程专项 5/5（跨平台说明/CI/版本纪律/数据体检面板）+ qa_ui.cjs 装版 token 兼容 + make.ps1 -Ui 开关。装版 56.7MB，qa_install 15/15 + qa_ui 18/18 全过。</div>
 </div>
 
 <h2>里程碑</h2>
@@ -65,6 +65,7 @@ a { color:var(--green); }
   <div class="it"><div class="d">2026-11-21</div><div class="t">v1.8.4 体验修复六连</div><div class="dsc">Zotero 自愈/本地文件读写/OCR 对照/PaddleOCR 高精引擎/卡片同屏，装机版全量回归通过</div></div>
   <div class="it key"><div class="d">2026-11-25</div><div class="t">v1.9.0 消融实验改造完成</div><div class="dsc">插件开关/数据路径/模块拆分/数据体检全套就绪，dsh 改进建议 62 条完成 15 条（5 缺陷+5 P0+3 P1+UI 2 项）</div></div>
   <div class="it"><div class="d">2026-11-26</div><div class="t">v1.9.1 UI 大改进 + dsh 修复 10 缺陷</div><div class="dsc">dsh 会话独立修复升级清库 P0/路由404/出处内联表单等 10 项；Auto-Korm UI 八项（书房课题化/命令面板/属文改造/阅读体验），7 commits 推送</div></div>
+  <div class="it key"><div class="d">2026-11-26</div><div class="t">v1.9.2 CBDB SQLite + 任务书全清</div><div class="dsc">CBDB .mdb→.sqlite 提速 175 倍（5400ms→31ms），dsh 任务书 UI 11 项+工程专项 5/5 全部落地，qa_install 15/15 + qa_ui 18/18 全过，19 commits 推送</div></div>
 </div>
 
 <h2>功能全景</h2>
@@ -83,18 +84,18 @@ a { color:var(--green); }
 
 <h2>最近更新</h2>
 <div class="feed">
-  <div class="r"><span class="dt">11-26</span><span>feat(v1.9.1): UI-9 Ctrl+K 命令面板</span></div>
-  <div class="r"><span class="dt">11-26</span><span>feat(v1.9.1): UI-7 阅读体验——字体+字号选择</span></div>
-  <div class="r"><span class="dt">11-26</span><span>feat(v1.9.1): UI-3 考证表单折叠 + UI-5 属文页改造</span></div>
-  <div class="r"><span class="dt">11-26</span><span>feat(v1.9.1): UI-4 地图浮层间距 + UI-6 出处记忆</span></div>
-  <div class="r"><span class="dt">11-26</span><span>feat(v1.9.1): UI-1 书房课题化 + UI-2 导航去重</span></div>
-  <div class="r"><span class="dt">11-26</span><span>docs: 开发指南 README-开发.md（打包/验收/claim/陷阱/消融）</span></div>
-  <div class="r"><span class="dt">11-26</span><span>chore: 清理历史打包脚本（11份）+ 残留测试文件</span></div>
-  <div class="r"><span class="dt">11-26</span><span>chore(collab): Auto-Korm 接续 claim（推 dsh 6 commits + 后续工作）</span></div>
+  <div class="r"><span class="dt">11-26</span><span>chore: _shots/ 入 gitignore（qa_ui 截图不入库）</span></div>
+  <div class="r"><span class="dt">11-26</span><span>release v1.9.2: CBDB SQLite 提速175x + UI 11项 + qa_ui 装版兼容</span></div>
+  <div class="r"><span class="dt">11-26</span><span>feat: make.ps1 -Ui 开关 + package.json（puppeteer-core 依赖声明）</span></div>
+  <div class="r"><span class="dt">11-26</span><span>ci: SQLite 兼容层翻译自检（TOP→LIMIT/IIF→CASE/NZ→COALESCE）</span></div>
+  <div class="r"><span class="dt">11-26</span><span>docs: README 跨平台说明 + 技术栈更新（SQLite 自动检测）</span></div>
+  <div class="r"><span class="dt">11-26</span><span>chore: CBDB SQLite 迁移脚本入库（tools/migrate_cbdb_sqlite.py）</span></div>
+  <div class="r"><span class="dt">11-26</span><span>perf(v1.9.1): CBDB 迁移到 SQLite——查询提速 175 倍</span></div>
+  <div class="r"><span class="dt">11-26</span><span>fix+feat: app.js 语法错误修复（大纲单引号冲突）+ qa_ui.cjs UI 自动化验收</span></div>
 </div>
 
 <div class="foot">
-本页由 <span class="updated">2026-11-26 13:38</span> 自动生成并推送——主仓库每次提交发版后一分钟内刷新。<br>
+本页由 <span class="updated">2026-11-26 15:51</span> 自动生成并推送——主仓库每次提交发版后一分钟内刷新。<br>
 🖥️ <b>在线演示预览</b>（常开，可直接上手试）：<a href="https://junexi.cpolar.cn/?jx_token=jx-laoshi-2026">https://junexi.cpolar.cn/?jx_token=jx-laoshi-2026</a><br>
 六月息源码仓库为私有（与数字史学中心协议约定），本页与预览端为对外公开的进度窗口。<br>
 项目：中国社会科学院大学 · 数字史学中心资助项目　|　协议：MIT（著作权双方共有）
